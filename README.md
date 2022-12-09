@@ -36,7 +36,7 @@ export VISUAL=nano; crontab -e
 ```
 Copy/Paste the following (adapt to your container name and LED) :
 ```shell
-* * * * *  /path/to/monitor_container_led mbusd U1
+* * * * *  /etc/config-tools/monitor_container_led mbusd U1
 ```
 This will check the container state every minute. 
 You can add several lines if you have several containers to monitor
