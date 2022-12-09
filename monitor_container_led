@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Usage: ./monitor_container_led containername LEDID
+# exemple: ./monitor_container_led mbusd U1
+#eventmsg 0x40010N0C
+#Where N is LED number(0 to 6), and C the color (0 : OFF, 1 : GREEN, 2 : RED, 3 : YELLOW).
+#GREEN : Container running
+#ORANGE : Container stopped
+#RED : Container does not exist
+#
+#export VISUAL=nano; crontab -e (open crontab with nano by default)
+#* * * * *  /path/to/monitor_container_led mbusd U1
+#
+
+CONTAINER=$1
+LED=$2
+
+case "$LED" in
+   "U1") ledid="0x400100"
+      ;;
+   "U2") ledid="0x400101"
+      ;;
+   "U3") ledid="0x400102"
+      ;;
+   "U4") ledid="0x400103"
+      ;;
+   "U5") ledid="0x400104"
+      ;;
+   "U6") ledid="0x400105"
+      ;;
+   "U7") ledid="0x400106"
+      ;;
+   *)
+     ledid="0x400100"
+     ;;
+esac
+
+RUNNING=$(docker inspect --format="{{ .State.Running }}" $CONTAINER 2> /dev/null)
+
+if [ $? -eq 1 ]; then
+  echo "UNKNOWN - $CONTAINER does not exist."
+  eventmsg "${ledid}02"
+  exit 3
+fi
+
+if [ "$RUNNING" == "false" ]; then
+  echo "CRITICAL - $CONTAINER is not running."
+  eventmsg "${ledid}03"
+  exit 2
+
+else
+  eventmsg "${ledid}01"
+  echo "OK - $CONTAINER is running"
+fi
+
