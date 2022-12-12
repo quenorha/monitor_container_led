@@ -1,4 +1,11 @@
 # monitor_container_led
+
+<div style="text-align: center">
+<img src="images/schema.png"
+     alt="schema"/>
+</div>
+
+
 Simple script to display container status on WAGO Controller user LEDs.
 - GREEN : Container running
 - ORANGE : Container stopped
@@ -43,5 +50,6 @@ You can add several lines if you have several containers to monitor
 
 ### Go further
 We could add a deeper check of the container based on logs or based on status (when provided by the application, i.e Node-RED).
-
+When using a device with only 1 User LED (750-8217, CC100...) we could adapt the script to display a synthesis of monitored containers.
+Find a way to blink LED could be useful too.
 
